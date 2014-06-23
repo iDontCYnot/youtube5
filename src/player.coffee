@@ -9,10 +9,6 @@ class Player
     @placeholder.style.height = @height + "px"
     @placeholder.setAttribute "data-clean", "yes" # prevent Feedly from stripping style attributes
 
-    @player = create("div", @placeholder, "youtube5player youtube5loading")
-    @player.style.width = "100%"
-    @player.style.height = "100%"
-
     replace.parentNode.replaceChild @placeholder, replace
 
   initVideo: =>
@@ -28,12 +24,11 @@ class Player
     @meta = meta
 
     if @meta.error
-      @player.className = "youtube5player error"
-      @error = create("div", @player, "youtube5error")
-      @error.innerHTML = @meta.error
       return
 
     @video = document.createElement("video")
+    @video.style.width = "100%"
+    @video.style.height = "100%"
 
     # sort formats in order of decreasing width
     @meta.formats.sort (a, b) ->
@@ -49,7 +44,7 @@ class Player
 
     @video.src = closestFormat.url
     @video.controls = true
-    @player.insertBefore @video
+    @placeholder.insertBefore @video
 
     if @meta.autoplay
       @video.autoplay = true
